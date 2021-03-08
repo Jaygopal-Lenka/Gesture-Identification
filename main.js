@@ -18,3 +18,51 @@ function take_snapshot() {
 
 console.log('ml5 version:',ml5.version);
 classifier= ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/3KQW_i2Tm/model.json',modelLoaded);
+
+function modelLoaded() {
+    console.log('Model Loaded!!');
+}
+
+function check() {
+
+    img = document.getElementById("captured_image");
+    classifier.classify(img, gotResult)
+}
+
+
+function speak() {
+    var synth = window.speechSynthesis;
+    speak_data="The prediction is " + prediction;
+    var utterThis = new SpeechSynthesisUtterance(speak_data);
+    utterThis.rate = 0.7;
+    synth.speak(utterThis);
+}
+
+function gotResult(error, results) {
+ 
+    if (error) {
+        console.error(error);
+    } else {
+     
+        console.log(results);
+        document.getElementById("result_sign_name").innerHTML= results[0].label;
+        prediction= results[0].label;
+        speak();
+
+        if(results[0].label=="Amazing"){
+
+            document.getElementById("update_sign").innerHTML= "&#128076;";
+        }
+
+        if(results[0].label=="Best" ){
+
+            document.getElementById("update_sign").innerHTML= "&#128077;";
+        }
+
+        if(results[0].label=="Victory"){
+
+            document.getElementById("update_sign").innerHTML= "&#9996;";
+        }
+    }
+
+}
